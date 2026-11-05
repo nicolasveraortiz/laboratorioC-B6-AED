@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 void mostrarMenu() {
+    int opcion;
     printf(
             "---------------------------------------------\n"
             " ███  ████  █████ █████ █   █ ███  ████ \n"   
@@ -14,9 +15,12 @@ void mostrarMenu() {
     printf(
         "¡Bienvenido al sistema de cálculo físico del Artemis! \n"
         "Ingrese un número para llamar a la función o realizar pruebas \n"
-        "1. Funcion 1 \n"
-        "2. Funcion 2 \n"
-        "3. Funcion 3 \n"
-        "4. Funcion 4 \n" 
+        "1. Resolver frenado aerodinamico \n"
+        "2. Resolver desaceleracion de la tripulacion \n"
+        "3. Resolver impacto del amerizaje\n"
+        "4. Evaluar reingreso a la atmósfera \n" 
+        "0. Cerrar el programa \n"
     );
+    
+    scanf("%d", &opcion);
 }
