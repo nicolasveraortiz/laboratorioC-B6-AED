@@ -28,3 +28,28 @@ double calcularFuerzaImpacto(double masa, double velocidad, double distanciaHund
     double fuerzaDinamica = (masa * velocidad * velocidad) / (2.0 * distanciaHundimiento);
     return peso + fuerzaDinamica;
 }
+
+// IMPLEMENTACIÓN DE FUNCIONES PARA EL MENU
+
+void resolverFrenadoAerodinamico(CapsulaOrion *nave) {
+    const double velocidadFinal = 25.0;
+    const double altitudFinal = 2500.0;
+
+    printf("\n=============================================\n");
+    printf("         FRENADO AERODINAMICO ORION          \n");
+    printf("=============================================\n");
+    
+    double ei = calcularEnergiaCinetica(nave->masa, nave->velocidad) + calcularEnergiaPotencial(nave->masa, nave->altitud);
+    double ef = calcularEnergiaCinetica(nave->masa, velocidadFinal) + calcularEnergiaPotencial(nave->masa, altitudFinal);
+    
+    double trabajo = calcularTrabajoFriccion(ef, ei);
+
+    // Mostrar los resultados de forma ordenada y profesional
+    printf(" > Masa de la nave:            %.2f kg\n", nave->masa);
+    printf(" > Altitud inicial / final:    %.2f m / %.2f m\n", nave->altitud, altitudFinal);
+    printf(" > Velocidad inicial / final:  %.2f m/s / %.2f m/s\n", nave->velocidad, velocidadFinal);
+    printf(" > Energía Mecánica Inicial:   %.3e J\n", ei);
+    printf(" > Energía Mecánica Final:     %.3e J\n", ef);
+    printf(" > Trabajo de Fricción (W_roz):  %.3e J\n", trabajo);
+    printf("---------------------------------------------\n");
+}
