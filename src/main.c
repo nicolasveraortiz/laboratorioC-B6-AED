@@ -1,8 +1,7 @@
 #include <stdio.h>
-
-int a,b,c;
+#include "../include/validaciones.h"
 
 int main() {
-    printf("Hello, World!\n");
+    mostrarMenu();
     return 0;
 }
