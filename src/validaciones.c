@@ -1,9 +1,8 @@
 #include <stdio.h>
-#include "artemis.h"
-#include "validaciones.h"
+#include "../include/validaciones.h"
+#include "../include/artemis.h"
 
-int mostrarMenu() {
-    int opcion;
+void arteIntro() {
     printf(
             "---------------------------------------------\n"
             " ███  ████  █████ █████ █   █ ███  ████ \n"   
@@ -13,9 +12,12 @@ int mostrarMenu() {
             "█░░░█░█░░░█░  █░░ █████░█░░ █░███░████░░ \n" 
             " ░░  ░░░░  ░   ░░  ░░░░░ ░░  ░░░░░ ░░░░ ░ \n"
             "  ░   ░ ░   ░   ░   ░░░░░ ░   ░ ░░░ ░░░░ \n"
-            "---------------------------------------------\n");
+            "---------------------------------------------\n\n"
+            "¡Bienvenido al sistema de cálculo físico del Artemis! \n");
+}
+
+void mostrarMenu() {
     printf(
-        "¡Bienvenido al sistema de cálculo físico del Artemis! \n"
         "Ingrese un número para llamar a la función o realizar pruebas \n"
         "1. Resolver frenado aerodinamico \n"
         "2. Resolver desaceleracion de la tripulacion \n"
@@ -23,9 +25,6 @@ int mostrarMenu() {
         "4. Evaluar reingreso a la atmósfera \n" 
         "0. Cerrar el programa \n"
     );
-    
-    scanf("%d", &opcion);
-    return opcion;
 }
 
 void procesoEjecutar(int opcion, CapsulaOrion *nave) {
@@ -40,13 +39,12 @@ void procesoEjecutar(int opcion, CapsulaOrion *nave) {
             resolverAmerizajeImpacto(nave);
             break;
         case 4:
-            resolverVentanaReingreso(nave);
+            evaluarVentanaReingreso(nave);
             break;
         case 0:
-            printf("Cerrando el programa");
+            printf("Cerrando el programa...");
             break;
         default:
             printf("Opción inválida. Por favor ingrese un número válido para ejecutar el programa.");
-            break;
     }
 }

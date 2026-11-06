@@ -26,6 +26,6 @@ double calcularTrabajoFriccion(double energiaMecanicaFinal, double energiaMecani
 double calcularDesaceleracion(double vInicial, double vFinal, double tiempo);
 double calcularFuerzaImpacto(double masa, double velocidad, double distanciaHundimiento);
 
-float a_en_g(double a){
+//float a_en_g(double a){
     // Funcion para representar aceleracion en multiplos de gravedad
-}
+//}
