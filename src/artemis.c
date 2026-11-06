@@ -8,7 +8,6 @@ double calcularEnergiaCinetica(double masa, double velocidad) {
 }
 
 double calcularEnergiaPotencial(double masa, double altitud) {
-    // const double g = 9.81;
     return masa * GRAVEDAD * altitud;
 }
 
@@ -22,14 +21,12 @@ double calcularDesaceleracion(double vInicial, double vFinal, double tiempo) {
 }
 
 double calcularFuerzaImpacto(double masa, double velocidad, double distanciaHundimiento) {
-    // const double g = 9.81;
     double peso = masa * GRAVEDAD;
     if (distanciaHundimiento <= 0) return peso;
     double fuerzaDinamica = (masa * velocidad * velocidad) / (2.0 * distanciaHundimiento);
     return peso + fuerzaDinamica;
 }
 
-<<<<<<< HEAD
 // IMPLEMENTACIÓN DE FUNCIONES PARA EL MENU
 
 void resolverFrenadoAerodinamico(CapsulaOrion *nave) {
@@ -65,7 +62,7 @@ void resolverDesaceleracionTripulacion(CapsulaOrion *nave) {
     scanf("%lf", &tiempoFrenado);
     //funcion matematica: 
     double aceleracion = calcularDesaceleracion(nave->velocidad, velocidadFinal, tiempoFrenado);
-    double fuerzaG = aceleracion / 9.8;
+    double fuerzaG = a_en_g(aceleracion);
     printf("\n[REPORTE DE DESACELERACION]\n");
     printf("> Desaceleracion media: %.2f m/s^2\n", aceleracion);
     // Uso -fuerzag porque la aceleracion es negativa por frenado, asi mostramos Gs positivos
@@ -92,7 +89,7 @@ void resolverAmerizajeImpacto(CapsulaOrion *nave) {
     //funcion matematica:
     double fuerzaTotal = calcularFuerzaImpacto(nave->masa, velocidadImpacto, distanciaHundimiento);
     //comparo la fuerza del impacto contra el peso normal de la nave 
-    double pesoNave = nave->masa * 9.8;
+    double pesoNave = nave->masa * GRAVEDAD;
     double multiplicadorPeso = fuerzaTotal / pesoNave; 
 
     printf("\n[REPORTE DE IMPACTO ESTRUCTURAL]\n");
@@ -101,9 +98,14 @@ void resolverAmerizajeImpacto(CapsulaOrion *nave) {
 }
 
 void evaluarVentanaReingreso (CapsulaOrion *nave) {
+    float angulo;
+    
     printf("\n=============================================\n");
     printf("          EVALUACION DE ANGULO DE REINGRESO           \n");
     printf("=============================================\n");
+
+    // printf("Ingrese un angulo de reingreso: ");
+    // angulo = solicitar_float_positivo();
 
     printf(" > Angulo de reingreso (gamma) actual: %.2f°\n" , nave->anguloReingreso);
 
@@ -115,7 +117,7 @@ void evaluarVentanaReingreso (CapsulaOrion *nave) {
         printf(" [TRAYECTORIA SEGURA] Ángulo de reingreso dentro del rango esperado (5,5° - 7.0°).\n");
     }
 }    
-=======
+
 // Funciones de conversion mas utilitarias
 float a_en_g(double a){
     // Funcion para expresar aceleracion en multiplos de gravedad
@@ -130,4 +132,3 @@ double conversor(double valor, double unidad_original, double unidad_buscada){
     double res = valor * unidad_original / unidad_buscada;
     return res;
 }
->>>>>>> conversiones_de_unidades

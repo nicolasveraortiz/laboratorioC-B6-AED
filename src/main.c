@@ -13,7 +13,7 @@ int main() {
         mostrarMenu();
         scanf("%d", &opcion);
         procesoEjecutar(opcion, &nave);
-        if (opcion == 0) {bandera = false;}
+        if (opcion == 5) {bandera = false;}
     }
     return 0;
 }

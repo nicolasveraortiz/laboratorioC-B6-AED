@@ -7,7 +7,7 @@ typedef struct {
     double anguloReingreso;  // °
 } CapsulaOrion;
 
-#define GRAVEDAD 9.81
+#define GRAVEDAD 9.8066
 #define MASA_CAPSULA 10400.0 // <-- [kg]
 #define VELOCIDAD_INICIAL 11000.0 // <-- [m/s]
 #define ALTITUD_REINGRESO 120.0 // <-- [km]
