@@ -2,6 +2,7 @@
 #include "../include/validaciones.h"
 
 int main() {
-    mostrarMenu();
+    int opcion = mostrarMenu();
+    pocesoEjecutar(opcion, NILL);
     return 0;
 }
