@@ -77,3 +77,24 @@ void resolverDesaceleracionTripulacion(CapsulaOrion *nave) {
         printf("[ESTADO] Fuerzas G dentro de los parametros de supervivencia.\n");
     }
 }
+
+void resolverAmerizajeImpacto(CapsulaOrion *nave) {
+    double distanciaHundimiento;
+    //segun escenario la capsula toca el agua a 8.0m/s
+    double velocidadImpacto = 8.0;
+    printf("\n-- FASE 3: AMERIZAJE EN EL OCEANO PACIFICO ---\n");
+    printf("Masa de la capsula: %.2f kg\n", nave->masa);
+    printf("Velocidad de impacto contra el agua: %.2f m/s\n", velocidadImpacto);
+
+    printf("Ingrese la profundidad de hundimiento en el agua en metros (ej. 1.50): ");
+    scanf("%lf", &distanciaHundimiento);
+    //funcion matematica:
+    double fuerzaTotal = calcularFuerzaImpacto(nave->masa, velocidadImpacto, distanciaHundimiento);
+    //comparo la fuerza del impacto contra el peso normal de la nave 
+    double pesoNave = nave->masa * 9.8;
+    double multiplicadorPeso = fuerzaTotal / pesoNave; 
+
+    printf("\n[REPORTE DE IMPACTO ESTRUCTURAL]\n");
+    printf("> Fuerza total absorbida por el escudo: %.2f N\n", fuerzaTotal);
+    printf("> El impacto equivale a %.2f veces el propio peso de la capsula.\n", multiplicadorPeso);
+}
