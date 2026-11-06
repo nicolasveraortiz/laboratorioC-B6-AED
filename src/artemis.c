@@ -53,3 +53,27 @@ void resolverFrenadoAerodinamico(CapsulaOrion *nave) {
     printf(" > Trabajo de Fricción (W_roz):  %.3e J\n", trabajo);
     printf("---------------------------------------------\n");
 }
+
+void resolverDesaceleracionTripulacion(CapsulaOrion *nave) {
+    double tiempoFrenado;
+    double velocidadFinal =25.0; 
+    printf("FASE 2: Desaceleracion de la Tripulacion");
+    printf("Velocidad de ingreso: %.2fm/s\n", nave->velocidad);
+    printf("velocidad de despliegue de paracaidas: %.2f m/s\n", velocidadFinal);
+    printf("Ingrese el tiempo esperado de la fase de mayor frenado en segundos (ej: 400.0): ");
+    scanf("%lf", &tiempoFrenado);
+    //funcion matematica: 
+    double aceleracion = calcularDesaceleracion(nave->velocidad, velocidadFinal, tiempoFrenado);
+    double fuerzaG = aceleracion / 9.8;
+    printf("\n[REPORTE DE DESACELERACION]\n");
+    printf("> Desaceleracion media: %.2f m/s^2\n", aceleracion);
+    // Uso -fuerzag porque la aceleracion es negativa por frenado, asi mostramos Gs positivos
+    printf("> Fuerza G soportada por los astronautas: %.2f G\n", -fuerzaG);
+    
+    if (-fuerzaG > 9.0) {
+        //Advertencia creada:
+        printf("[ALERTA CRITICA] Riesgo de perdida de conocimiento inducida por fuerzas G (G-LOC).\n");
+    }   else {
+        printf("[ESTADO] Fuerzas G dentro de los parametros de supervivencia.\n");
+    }
+}
