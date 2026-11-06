@@ -98,3 +98,19 @@ void resolverAmerizajeImpacto(CapsulaOrion *nave) {
     printf("> Fuerza total absorbida por el escudo: %.2f N\n", fuerzaTotal);
     printf("> El impacto equivale a %.2f veces el propio peso de la capsula.\n", multiplicadorPeso);
 }
+
+void evaluarVentanaReingreso (CapsulaOrion *nave) {
+    printf("\n=============================================\n");
+    printf("          EVALUACION DE ANGULO DE REINGRESO           \n");
+    printf("=============================================\n");
+
+    printf(" > Angulo de reingreso (gamma) actual: %.2f°\n" , nave->anguloReingreso);
+
+    if (nave->anguloReingreso < 5.5) {
+        printf(" [ALERTA] Ángulo por debajo del rango (< 5,5°). La nave rebotará hacia el espacio.\n");
+    } else if (nave->anguloReingreso > 7.0) {
+        printf(" [ALERTA] Ángulo por encima del rango (> 7.0°). La nave se desintegrará.\n");
+    } else {
+        printf(" [TRAYECTORIA SEGURA] Ángulo de reingreso dentro del rango esperado (5,5° - 7.0°).\n");
+    }
+}    
