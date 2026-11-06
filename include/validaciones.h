@@ -1,3 +1,5 @@
 #pragma once
+#include "artemis.h"
 
-void mostrarMenu();
+int mostrarMenu();
+void procesoEjecutar(int opcion, CapsulaOrion *nave);
