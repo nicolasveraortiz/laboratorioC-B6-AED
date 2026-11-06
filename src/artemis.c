@@ -29,6 +29,7 @@ double calcularFuerzaImpacto(double masa, double velocidad, double distanciaHund
     return peso + fuerzaDinamica;
 }
 
+<<<<<<< HEAD
 // IMPLEMENTACIÓN DE FUNCIONES PARA EL MENU
 
 void resolverFrenadoAerodinamico(CapsulaOrion *nave) {
@@ -114,3 +115,19 @@ void evaluarVentanaReingreso (CapsulaOrion *nave) {
         printf(" [TRAYECTORIA SEGURA] Ángulo de reingreso dentro del rango esperado (5,5° - 7.0°).\n");
     }
 }    
+=======
+// Funciones de conversion mas utilitarias
+float a_en_g(double a){
+    // Funcion para expresar aceleracion en multiplos de gravedad
+    // La funcion recibe la aceleracion en m/s
+    float res = a / GRAVEDAD;
+
+    return res;
+}
+
+// Funcion universal de conversion de unidades donde 'unidad_original' y 'unidad_buscadad' deben ser equivalentes
+double conversor(double valor, double unidad_original, double unidad_buscada){
+    double res = valor * unidad_original / unidad_buscada;
+    return res;
+}
+>>>>>>> conversiones_de_unidades
