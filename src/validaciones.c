@@ -53,13 +53,20 @@ int leerEntero(int min, int max) {
     int numero;
     
     while (1) {
-        printf("Ingrese una opción dentro del rango (%d al %d): ", min, max);
-        scanf("%d", &numero);
+        printf("Ingrese una opción (%d al %d): ", min, max);
+        
+        if (scanf("%d", &numero) != 1) {
+            printf("Tipo de dato invalido. Ingrese un numero.\n");
+            
+            while (getchar() != '\n'); 
+            
+            continue;
+        }
         
         if (numero >= min && numero <= max) {
             return numero;
         }
         
-        printf("Opción inválida. Ingrese un valor dentro del rango.\n");
+        printf("Opcion fuera de rango. Ingrese un numero entre %d y %d.\n", min, max);
     }
 }
