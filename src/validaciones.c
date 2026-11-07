@@ -48,3 +48,18 @@ void procesoEjecutar(int opcion, CapsulaOrion *nave) {
             printf("Opción inválida. Por favor ingrese un número válido para ejecutar el programa.");
     }
 }
+
+int leerEntero(int min, int max) {
+    int numero;
+    
+    while (1) {
+        printf("Ingrese una opción dentro del rango (%d al %d): ", min, max);
+        scanf("%d", &numero);
+        
+        if (numero >= min && numero <= max) {
+            return numero;
+        }
+        
+        printf("Opción inválida. Ingrese un valor dentro del rango.\n");
+    }
+}
