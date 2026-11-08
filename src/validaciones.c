@@ -70,6 +70,27 @@ void procesoEjecutar(int opcion, CapsulaOrion *nave)
     }
 }
 
+int leerEntero(int min, int max) {
+    int numero;
+    
+    while (1) {
+        printf("Ingrese una opción (%d al %d): ", min, max);
+        
+        if (scanf("%d", &numero) != 1) {
+            printf("Tipo de dato invalido. Ingrese un numero.\n");
+            
+            while (getchar() != '\n'); 
+            
+            continue;
+        }
+        
+        if (numero >= min && numero <= max) {
+            return numero;
+        }
+        
+        printf("Opcion fuera de rango. Ingrese un numero entre %d y %d.\n", min, max);
+    }
+}
 void depurador(CapsulaOrion *nave){
     bool depurando = true;
     int opcion;

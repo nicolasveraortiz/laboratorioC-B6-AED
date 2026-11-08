@@ -110,11 +110,11 @@ void evaluarVentanaReingreso (CapsulaOrion *nave) {
     printf(" > Angulo de reingreso (gamma) actual: %.2f°\n" , nave->anguloReingreso);
 
     if (nave->anguloReingreso < 5.5) {
-        printf(" [ALERTA] Ángulo por debajo del rango (< 5,5°). La nave rebotará hacia el espacio.\n");
+        printf(" [ALERTA] Ángulo por debajo del rango (< 5.5°). La nave rebotará hacia el espacio.\n");
     } else if (nave->anguloReingreso > 7.0) {
         printf(" [ALERTA] Ángulo por encima del rango (> 7.0°). La nave se desintegrará.\n");
     } else {
-        printf(" [TRAYECTORIA SEGURA] Ángulo de reingreso dentro del rango esperado (5,5° - 7.0°).\n");
+        printf(" [TRAYECTORIA SEGURA] Ángulo de reingreso dentro del rango esperado (5.5° - 7.0°).\n");
     }
 }
 
