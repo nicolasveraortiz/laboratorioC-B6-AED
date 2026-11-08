@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <stdbool.h>
 #include "../include/validaciones.h"
 #include "../include/artemis.h"
 
@@ -30,6 +31,7 @@ void mostrarMenu()
         "3. Resolver impacto del amerizaje\n"
         "4. Evaluar reingreso a la atmósfera \n"        
         "5. Modificar datos de la nave \n"
+        "6. Generar informe de la nave \n"
         "0. Cerrar el programa \n");
         
 }
@@ -55,6 +57,9 @@ void procesoEjecutar(int opcion, CapsulaOrion *nave)
         break;
     case 5:
         modificarDatosNave(nave);
+        break;
+    case 6:
+        generarInformeJSON(nave);
         break;
     case 0:
         printf("Cerrando el programa...");

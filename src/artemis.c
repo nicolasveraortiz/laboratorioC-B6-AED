@@ -183,3 +183,27 @@ double conversor(double valor, double unidad_original, double unidad_buscada){
     double res = valor * unidad_original / unidad_buscada;
     return res;
 }
+
+// Implementacion de persistencia de datos (en json)
+void generarInformeJSON(CapsulaOrion *nave) {
+    // Abrir o crear el archivo en modo escritura ("w" de write)
+    FILE *archivo = fopen("reporte_artemis.json", "w");
+    
+    if (archivo == NULL) {
+        printf("\n[ERROR] No se pudo crear el archivo JSON.\n");
+        return;
+    }
+
+    fprintf(archivo, "{\n");
+    fprintf(archivo, "  \"CapsulaOrion\": {\n");
+    fprintf(archivo, "    \"masa_kg\": %.2f,\n", nave->masa);
+    fprintf(archivo, "    \"altitud_m\": %.2f,\n", nave->altitud);
+    fprintf(archivo, "    \"velocidad_ms\": %.2f,\n", nave->velocidad);
+    fprintf(archivo, "    \"anguloReingreso_grados\": %.2f\n", nave->anguloReingreso);
+    fprintf(archivo, "  }\n");
+    fprintf(archivo, "}\n");
+
+    fclose(archivo);
+    
+    printf("\n[SISTEMA] Informe JSON generado exitosamente en 'reporte_artemis.json'.\n");
+}
