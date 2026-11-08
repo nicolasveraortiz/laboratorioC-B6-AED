@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <stdbool.h>
 #include "../include/validaciones.h"
 #include "../include/artemis.h"
 
@@ -24,12 +25,15 @@ void arteIntro()
 void mostrarMenu()
 {
     printf(
-        "Ingrese un número para llamar a la función o realizar pruebas \n"
+        "\nIngrese un número para llamar a la función o realizar pruebas \n"
         "1. Resolver frenado aerodinamico \n"
         "2. Resolver desaceleracion de la tripulacion \n"
         "3. Resolver impacto del amerizaje\n"
-        "4. Evaluar reingreso a la atmósfera \n"
-        "5. Cerrar el programa \n");
+        "4. Evaluar reingreso a la atmósfera \n"        
+        "5. Modificar datos de la nave \n"
+        "6. Generar informe de la nave \n"
+        "0. Cerrar el programa \n");
+        
 }
 
 void procesoEjecutar(int opcion, CapsulaOrion *nave)
@@ -48,11 +52,17 @@ void procesoEjecutar(int opcion, CapsulaOrion *nave)
     case 4:
         evaluarVentanaReingreso(nave);
         break;
-    case 5:
-        printf("Cerrando el programa...");
-        break;
     case 6010:
         depurador(nave);
+        break;
+    case 5:
+        modificarDatosNave(nave);
+        break;
+    case 6:
+        generarInformeJSON(nave);
+        break;
+    case 0:
+        printf("Cerrando el programa...");
         break;
     default:
         printf("Opción inválida. Por favor ingrese un número válido para ejecutar el programa.");

@@ -116,14 +116,65 @@ void evaluarVentanaReingreso (CapsulaOrion *nave) {
     } else {
         printf(" [TRAYECTORIA SEGURA] Ángulo de reingreso dentro del rango esperado (5,5° - 7.0°).\n");
     }
-}    
+}
+
+void modificarDatosNave(CapsulaOrion *nave){
+    printf("Actuales datos de la nave:\n");
+    printf("masa de la nave: %.2lf kg\n", nave->masa);
+    printf("altitud de reingreso de nave: %.2lf m\n", nave->altitud);
+    printf("velocdad inicial de la nave: %.2lf m/s\n", nave->velocidad);
+    printf("angulo de reingreso de la nave: %.2lf°\n", nave->anguloReingreso);
+
+    double nmasa = nave->masa;                        // kg
+    double naltitud = nave->altitud;                  // metros
+    double nvelocidad = nave->velocidad;              // m/s
+    double nanguloReingreso = nave->anguloReingreso;  // °
+    
+    // Aca se debería ingresar los datos con una funcion de validacion de entrada
+    printf("\nDeje vacio para mantener el valor actual.");
+    /* La linea anterior indica que el usuario deberia poder no ingresar valor,
+    y se mantendria el valor actual, se puede simular el comportamiento, pero
+    idealmente este comportamiento deberia venir de la mano de una funcion de 
+    validacion de entrada de datos reutilizable*/
+
+    printf("\nIngrese la nueva masa para la nave: ");
+    scanf("%lf", &nmasa);
+    nave->masa = nmasa;
+    printf("\nIngrese la nueva altitud de reingreso para la nave: ");
+    scanf("%lf", &naltitud);
+    nave->altitud = naltitud;
+    printf("\nIngrese la nueva velocidad inicial para la nave: ");
+    scanf("%lf", &nvelocidad);
+    nave->velocidad = nvelocidad;
+    printf("\nIngrese el nuevo angulo de reingreso para la nave: ");
+    scanf("%lf", &nanguloReingreso);
+    nave->anguloReingreso = nanguloReingreso;
+
+    printf("Actuales datos de la nave:\n");
+    printf("masa de la nave: %.2lf kg\n", nave->masa);
+    printf("altitud de reingreso de nave: %.2lf m\n", nave->altitud);
+    printf("velocdad inicial de la nave: %.2lf m/s\n", nave->velocidad);
+    printf("angulo de reingreso de la nave: %.2lf°\n", nave->anguloReingreso);
+}
+
+void valoresPredeterminadoDeNave(CapsulaOrion *nave){
+    nave->masa = MASA_CAPSULA;
+    nave->altitud = ALTITUD_REINGRESO;
+    nave->velocidad = VELOCIDAD_INICIAL;
+    nave->anguloReingreso = 6.2;
+
+    printf("Insertando valores predeterminados de la nave:\n");
+    printf("masa de la nave: %lfkg\n", nave->masa);
+    printf("altitud de reingreso de nave: %lfm\n", nave->altitud);
+    printf("velocdad inicial de la nave: %lfm/s\n", nave->velocidad);
+    printf("angulo de reingreso de la nave: %lf°\n", nave->anguloReingreso);
+}
 
 // Funciones de conversion mas utilitarias
 float a_en_g(double a){
     // Funcion para expresar aceleracion en multiplos de gravedad
     // La funcion recibe la aceleracion en m/s
     float res = a / GRAVEDAD;
-
     return res;
 }
 
@@ -131,4 +182,28 @@ float a_en_g(double a){
 double conversor(double valor, double unidad_original, double unidad_buscada){
     double res = valor * unidad_original / unidad_buscada;
     return res;
+}
+
+// Implementacion de persistencia de datos (en json)
+void generarInformeJSON(CapsulaOrion *nave) {
+    // Abrir o crear el archivo en modo escritura ("w" de write)
+    FILE *archivo = fopen("reporte_artemis.json", "w");
+    
+    if (archivo == NULL) {
+        printf("\n[ERROR] No se pudo crear el archivo JSON.\n");
+        return;
+    }
+
+    fprintf(archivo, "{\n");
+    fprintf(archivo, "  \"CapsulaOrion\": {\n");
+    fprintf(archivo, "    \"masa_kg\": %.2f,\n", nave->masa);
+    fprintf(archivo, "    \"altitud_m\": %.2f,\n", nave->altitud);
+    fprintf(archivo, "    \"velocidad_ms\": %.2f,\n", nave->velocidad);
+    fprintf(archivo, "    \"anguloReingreso_grados\": %.2f\n", nave->anguloReingreso);
+    fprintf(archivo, "  }\n");
+    fprintf(archivo, "}\n");
+
+    fclose(archivo);
+    
+    printf("\n[SISTEMA] Informe JSON generado exitosamente en 'reporte_artemis.json'.\n");
 }
