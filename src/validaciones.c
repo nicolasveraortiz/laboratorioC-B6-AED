@@ -91,6 +91,29 @@ int leerEntero(int min, int max) {
         printf("Opcion fuera de rango. Ingrese un numero entre %d y %d.\n", min, max);
     }
 }
+
+int leerRealPositivo(double min, double max) {
+    double numero;
+    
+    while (1) {
+        printf("Ingrese una opción (%lf al %lf): ", min, max);
+        
+        if (scanf("%lf", &numero) != 1) {
+            printf("Tipo de dato invalido. Ingrese un numero.\n");
+            
+            while (getchar() != '\n'); 
+            
+            continue;
+        }
+        
+        if (numero >= min && numero <= max) {
+            return numero;
+        }
+        
+        printf("Opcion fuera de rango. Ingrese un numero entre %d y %d.\n", min, max);
+    }
+}
+
 void depurador(CapsulaOrion *nave){
     bool depurando = true;
     int opcion;

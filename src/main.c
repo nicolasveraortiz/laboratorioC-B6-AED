@@ -11,7 +11,7 @@ int main() {
 
     while (bandera) {
         mostrarMenu();
-        opcion = leerEntero(0, 4);
+        opcion = leerEntero(0, 6);
         procesoEjecutar(opcion, &nave);
         if (opcion == 0) {bandera = false;}
     }

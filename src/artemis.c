@@ -155,6 +155,8 @@ void modificarDatosNave(CapsulaOrion *nave){
     printf("altitud de reingreso de nave: %.2lf m\n", nave->altitud);
     printf("velocdad inicial de la nave: %.2lf m/s\n", nave->velocidad);
     printf("angulo de reingreso de la nave: %.2lf°\n", nave->anguloReingreso);
+
+    generarInformeJSON(nave);
 }
 
 void valoresPredeterminadoDeNave(CapsulaOrion *nave){
