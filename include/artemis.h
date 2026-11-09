@@ -27,6 +27,7 @@ double calcularDesaceleracion(double vInicial, double vFinal, double tiempo);
 double calcularFuerzaImpacto(double masa, double velocidad, double distanciaHundimiento);
 
 void modificarDatosNave(CapsulaOrion *nave);
+void cargarDatosDeJSON(CapsulaOrion *nave);
 void generarInformeJSON(CapsulaOrion *nave);
 
 float a_en_g(double a);

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "../include/artemis.h"
 
 // IMPLEMENTACIÓN DE FUNCIONES FÍSICAS
@@ -110,11 +111,11 @@ void evaluarVentanaReingreso (CapsulaOrion *nave) {
     printf(" > Angulo de reingreso (gamma) actual: %.2f°\n" , nave->anguloReingreso);
 
     if (nave->anguloReingreso < 5.5) {
-        printf(" [ALERTA] Ángulo por debajo del rango (< 5.5°). La nave rebotará hacia el espacio.\n");
+        printf(" [ALERTA] Ángulo por debajo del rango (< 5,5°). La nave rebotará hacia el espacio.\n");
     } else if (nave->anguloReingreso > 7.0) {
         printf(" [ALERTA] Ángulo por encima del rango (> 7.0°). La nave se desintegrará.\n");
     } else {
-        printf(" [TRAYECTORIA SEGURA] Ángulo de reingreso dentro del rango esperado (5.5° - 7.0°).\n");
+        printf(" [TRAYECTORIA SEGURA] Ángulo de reingreso dentro del rango esperado (5,5° - 7.0°).\n");
     }
 }
 
@@ -147,12 +148,10 @@ void modificarDatosNave(CapsulaOrion *nave){
     if (nanguloReingreso >= 0) { nave->anguloReingreso = nanguloReingreso; }
 
     printf("Actuales datos de la nave:\n");
-    printf("masa de la nave: %.2lf kg\n", nave->masa);
-    printf("altitud de reingreso de nave: %.2lf m\n", nave->altitud);
-    printf("velocdad inicial de la nave: %.2lf m/s\n", nave->velocidad);
-    printf("angulo de reingreso de la nave: %.2lf°\n", nave->anguloReingreso);
-
-    generarInformeJSON(nave);
+    printf("Masa de la nave: %.2lf kg\n", nave->masa);
+    printf("Altitud de reingreso de nave: %.2lf m\n", nave->altitud);
+    printf("Velocdad inicial de la nave: %.2lf m/s\n", nave->velocidad);
+    printf("Angulo de reingreso de la nave: %.2lf°\n", nave->anguloReingreso);
 }
 
 void valoresPredeterminadoDeNave(CapsulaOrion *nave){
@@ -181,7 +180,61 @@ double conversor(double valor, double unidad_original, double unidad_buscada){
     double res = valor * unidad_original / unidad_buscada;
     return res;
 }
+//Lectura y Validacion de Datos de JSON cargado 
+void cargarDatosDeJSON(CapsulaOrion *nave) {
+    char ruta[256];
+    
+    printf("\n--- INICIO DE SIMULACION ---\n");
+    printf("Ingrese la ruta completa de su archivo JSON (ej: C:\\Users\\Usuario\\reporte.json)\n");
+    printf("O presione Enter para iniciar con los valores por defecto: ");
+    
+    // Leemos lo que escribe el usuario
+    fgets(ruta, sizeof(ruta), stdin);
+    
+    // Limpiamos el salto de linea del Enter que deja fgets
+    if (strlen(ruta) > 0 && ruta[strlen(ruta) - 1] == '\n') {
+        ruta[strlen(ruta) - 1] = '\0';
+    }
+    
+    // Si solo apretó Enter, salimos y usa los valores que ya tiene la nave
+    if (strlen(ruta) == 0) {
+        return;
+    }
 
+    // Intentamos abrir el archivo en la ruta especificada
+    FILE *archivo = fopen(ruta, "r");
+    if (archivo == NULL) {
+        printf("\n[ERROR] No se encontro el archivo en: %s\n", ruta);
+        printf("[SISTEMA] Iniciando con valores predeterminados.\n");
+        return; 
+    }
+
+    char linea[150];
+    // Leemos linea por linea y extraemos los numeros
+    while (fgets(linea, sizeof(linea), archivo)) {
+        char *dosPuntos = strstr(linea, ":");
+        if (dosPuntos != NULL) {
+            if (strstr(linea, "\"masa_kg\"")) {
+                sscanf(dosPuntos + 1, "%lf", &nave->masa);
+            } else if (strstr(linea, "\"altitud_m\"")) {
+                sscanf(dosPuntos + 1, "%lf", &nave->altitud);
+            } else if (strstr(linea, "\"velocidad_ms\"")) {
+                sscanf(dosPuntos + 1, "%lf", &nave->velocidad);
+            } else if (strstr(linea, "\"anguloReingreso_grados\"")) {
+                sscanf(dosPuntos + 1, "%lf", &nave->anguloReingreso);
+            }
+        }
+    }
+    fclose(archivo);
+
+    // Verificamos que los datos tengan sentido (no pueden ser neg o cero)
+    if (nave->masa <= 0 || nave->altitud <= 0 || nave->velocidad <= 0) {
+        printf("\n[ALERTA] El JSON estaba corrupto o tenia valores fisicamente imposibles.\n");
+        valoresPredeterminadoDeNave(nave);
+    } else {
+        printf("\n[SISTEMA] Configuracion cargada con exito desde el archivo.\n");
+    }
+}
 // Implementacion de persistencia de datos (en json)
 void generarInformeJSON(CapsulaOrion *nave) {
     // Abrir o crear el archivo en modo escritura ("w" de write)
