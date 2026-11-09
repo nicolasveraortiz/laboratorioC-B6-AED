@@ -9,3 +9,4 @@ double solicitar_double();
 double solicitar_double_positivo(char *msg);
 int solicitar_entero();
 int leerEntero(int min, int max);
+double leerRealPositivo(double min, double max, char *msg);

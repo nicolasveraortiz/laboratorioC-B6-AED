@@ -92,17 +92,15 @@ int leerEntero(int min, int max) {
     }
 }
 
-int leerRealPositivo(double min, double max) {
+double leerRealPositivo(double min, double max, char *msg) {
     double numero;
     
     while (1) {
-        printf("Ingrese una opción (%lf al %lf): ", min, max);
+        printf("%s", msg);
         
         if (scanf("%lf", &numero) != 1) {
-            printf("Tipo de dato invalido. Ingrese un numero.\n");
-            
+            printf("Tipo de dato invalido. Ingrese un numero real.\n");
             while (getchar() != '\n'); 
-            
             continue;
         }
         
@@ -110,7 +108,7 @@ int leerRealPositivo(double min, double max) {
             return numero;
         }
         
-        printf("Opcion fuera de rango. Ingrese un numero entre %d y %d.\n", min, max);
+        printf("Valor fuera del rango aceptado. Ingrese un numero entre %g y %g.\n" , min, max);
     }
 }
 
