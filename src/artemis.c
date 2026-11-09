@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../include/artemis.h"
+#include "../include/validaciones.h"
 
 // IMPLEMENTACIÓN DE FUNCIONES FÍSICAS
 
@@ -53,13 +54,11 @@ void resolverFrenadoAerodinamico(CapsulaOrion *nave) {
 }
 
 void resolverDesaceleracionTripulacion(CapsulaOrion *nave) {
-    double tiempoFrenado;
     double velocidadFinal =25.0; 
     printf("FASE 2: Desaceleracion de la Tripulacion");
     printf("Velocidad de ingreso: %.2fm/s\n", nave->velocidad);
     printf("velocidad de despliegue de paracaidas: %.2f m/s\n", velocidadFinal);
-    printf("Ingrese el tiempo esperado de la fase de mayor frenado en segundos (ej: 400.0): ");
-    scanf("%lf", &tiempoFrenado);
+    double tiempoFrenado = leerRealPositivo(0.001, 3600.0, "Ingrese el tiempo esperado de la fase de mayor frenado en segundos (ej: 400.0): ");
     //funcion matematica: 
     double aceleracion = calcularDesaceleracion(nave->velocidad, velocidadFinal, tiempoFrenado);
     double fuerzaG = a_en_g(aceleracion);
@@ -77,20 +76,17 @@ void resolverDesaceleracionTripulacion(CapsulaOrion *nave) {
 }
 
 void resolverAmerizajeImpacto(CapsulaOrion *nave) {
-    double distanciaHundimiento;
     //segun escenario la capsula toca el agua a 8.0m/s
     double velocidadImpacto = 8.0;
     printf("\n-- FASE 3: AMERIZAJE EN EL OCEANO PACIFICO ---\n");
     printf("Masa de la capsula: %.2f kg\n", nave->masa);
     printf("Velocidad de impacto contra el agua: %.2f m/s\n", velocidadImpacto);
-
-    printf("Ingrese la profundidad de hundimiento en el agua en metros (ej. 1.50): ");
-    scanf("%lf", &distanciaHundimiento);
+    double distanciaHundimiento = leerRealPositivo(0.001, 50.0, "Ingrese la profundidad de hundimiento en el agua en metros (ej. 1.50): ");
     //funcion matematica:
     double fuerzaTotal = calcularFuerzaImpacto(nave->masa, velocidadImpacto, distanciaHundimiento);
     //comparo la fuerza del impacto contra el peso normal de la nave 
     double pesoNave = nave->masa * GRAVEDAD;
-    double multiplicadorPeso = fuerzaTotal / pesoNave; 
+    double multiplicadorPeso = fuerzaTotal / pesoNave;
 
     printf("\n[REPORTE DE IMPACTO ESTRUCTURAL]\n");
     printf("> Fuerza total absorbida por el escudo: %.2f N\n", fuerzaTotal);
