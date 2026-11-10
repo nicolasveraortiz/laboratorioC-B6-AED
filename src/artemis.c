@@ -273,11 +273,3 @@ void cargarPresetDesdeArchivo(CapsulaOrion *nave) {
         printf("[SISTEMA] Se mantienen los datos actuales de la nave.\n");
     }
 }
-
-void generarInformeJSON(CapsulaOrion *nave) { // AUN NO HACE NADA RELEVANTE, DESARROLLAR
-    if (guardarDatosNave(nave, "reporte_artemis.json")) {
-        printf("\n[SISTEMA] Informe JSON generado en 'reporte_artemis.json'.\n");
-    } else {
-        printf("\n[ERROR] No se pudo crear el archivo JSON.\n");
-    }
-}
