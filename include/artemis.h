@@ -14,6 +14,7 @@ typedef struct {
 #define VELOCIDAD_DE_PARACAIDAS 25.0 // <-- [m/s]
 #define ALTITUD_PARACAIDAS 2.5 // <-- [km]
 #define VELOCIDAD_IMPACTO 8.0 // <-- [m/s]
+#define ARCHIVO_CONFIG "config_nave.json"
 
 void resolverFrenadoAerodinamico(CapsulaOrion *nave);
 void resolverDesaceleracionTripulacion(CapsulaOrion *nave);
@@ -27,8 +28,13 @@ double calcularDesaceleracion(double vInicial, double vFinal, double tiempo);
 double calcularFuerzaImpacto(double masa, double velocidad, double distanciaHundimiento);
 
 void modificarDatosNave(CapsulaOrion *nave);
-void cargarDatosDeJSON(CapsulaOrion *nave);
 void generarInformeJSON(CapsulaOrion *nave);
+void mostrarDatosNave(const CapsulaOrion *nave);
+int guardarDatosNave(const CapsulaOrion *nave, const char *ruta);
+int cargarDatosNave(CapsulaOrion *nave, const char *ruta);
+
+// AGREGAR: void iniciarDatosNave(CapsulaOrion *nave);
+void cargarPresetDesdeArchivo(CapsulaOrion *nave);
 
 float a_en_g(double a);
 double conversor(double valor, double unidad_original, double unidad_buscada);

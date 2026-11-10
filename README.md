@@ -9,11 +9,11 @@
 
 | Integrante | Rol / módulos principales |
 |---|---|
-| Santiago Solari| - |
-| Santiago Emmanuel Enriquez | - |
-| Santiago Mac Donald| - |
-| Luciano Gabriel Pereyra Brest| - |
-| Clivio Nicolás Vera Ortiz | - |
+| Santiago Solari| validaciones.c |
+| Santiago Emmanuel Enriquez | validaciones.c |
+| Santiago Mac Donald| artemis.c |
+| Luciano Gabriel Pereyra Brest| artemis.c / validaciones.c |
+| Clivio Nicolás Vera Ortiz | main.c / validaciones.c |
 
 **Comisión:** K1.2
 **Video de presentación:** -

@@ -3,8 +3,6 @@
 #include "../include/artemis.h"
 #include "../include/validaciones.h"
 
-// IMPLEMENTACIÓN DE FUNCIONES FÍSICAS
-
 double calcularEnergiaCinetica(double masa, double velocidad) {
     return 0.5 * masa * velocidad * velocidad;
 }
@@ -27,6 +25,19 @@ double calcularFuerzaImpacto(double masa, double velocidad, double distanciaHund
     if (distanciaHundimiento <= 0) return peso;
     double fuerzaDinamica = (masa * velocidad * velocidad) / (2.0 * distanciaHundimiento);
     return peso + fuerzaDinamica;
+}
+
+float a_en_g(double a){
+    // Funcion para expresar aceleracion en multiplos de gravedad
+    // La funcion recibe la aceleracion en m/s
+    float res = a / GRAVEDAD;
+    return res;
+}
+
+// Funcion universal de conversion de unidades donde 'unidad_original' y 'unidad_buscadad' deben ser equivalentes
+double conversor(double valor, double unidad_original, double unidad_buscada){
+    double res = valor * unidad_original / unidad_buscada;
+    return res;
 }
 
 // IMPLEMENTACIÓN DE FUNCIONES PARA EL MENU
@@ -115,39 +126,44 @@ void evaluarVentanaReingreso (CapsulaOrion *nave) {
     }
 }
 
+// funciones relacionadas con la generacion, carga o manipulacion de un archivo
+
+void mostrarDatosNave(const CapsulaOrion *nave) {
+    printf("Masa de la nave: %.2f kg\n", nave->masa);
+    printf("Altitud de reingreso: %.2f m\n", nave->altitud);
+    printf("Velocidad inicial: %.2f m/s\n", nave->velocidad);
+    printf("Angulo de reingreso: %.2f°\n", nave->anguloReingreso);
+}
+
+
 void modificarDatosNave(CapsulaOrion *nave){
+    double nuevo;
+
     printf("\n--- ACTUALIZACION DE PARAMETROS ---\n");
-    printf("Actuales datos de la nave:\n");
-    printf("masa de la nave: %.2lf kg\n", nave->masa);
-    printf("altitud de reingreso de nave: %.2lf m\n", nave->altitud);
-    printf("velocdad inicial de la nave: %.2lf m/s\n", nave->velocidad);
-    printf("angulo de reingreso de la nave: %.2lf°\n", nave->anguloReingreso);
+    printf("Datos actuales de la nave:\n");
+    mostrarDatosNave(nave);
+    printf("\nPara mantener el valor actual, ingrese 0.\n\n");
 
-    double nmasa = nave->masa;                        // kg
-    double naltitud = nave->altitud;                  // metros
-    double nvelocidad = nave->velocidad;              // m/s
-    double nanguloReingreso = nave->anguloReingreso;  // °
-    
-    printf("\nSi desea mantener el valor actual, ingrese -1.\n");
-    
-    printf("\nIngrese la nueva masa para la nave: ");
-    scanf("%lf", &nmasa);
-    if (nmasa >= 0) { nave->masa = nmasa; }
-    printf("\nIngrese la nueva altitud de reingreso para la nave: ");
-    scanf("%lf", &naltitud);
-    if (naltitud >= 0) { nave->altitud = naltitud; }
-    printf("\nIngrese la nueva velocidad inicial para la nave: ");
-    scanf("%lf", &nvelocidad);
-    if (nvelocidad >= 0) { nave->velocidad = nvelocidad; }
-    printf("\nIngrese el nuevo angulo de reingreso para la nave: ");
-    scanf("%lf", &nanguloReingreso);
-    if (nanguloReingreso >= 0) { nave->anguloReingreso = nanguloReingreso; }
+    nuevo = leerRealPositivo(0, 1000000.0, "Nueva masa (kg): ");
+    if (nuevo > 0) { nave->masa = nuevo; }
 
-    printf("Actuales datos de la nave:\n");
-    printf("Masa de la nave: %.2lf kg\n", nave->masa);
-    printf("Altitud de reingreso de nave: %.2lf m\n", nave->altitud);
-    printf("Velocdad inicial de la nave: %.2lf m/s\n", nave->velocidad);
-    printf("Angulo de reingreso de la nave: %.2lf°\n", nave->anguloReingreso);
+    nuevo = leerRealPositivo(0, 1000000.0, "Nueva altitud de reingreso (m): ");
+    if (nuevo > 0) { nave->altitud = nuevo; }
+
+    nuevo = leerRealPositivo(0, 20000.0, "Nueva velocidad inicial (m/s): ");
+    if (nuevo > 0) { nave->velocidad = nuevo; }
+
+    nuevo = leerRealPositivo(0, 90.0, "Nuevo angulo de reingreso (grados): ");
+    if (nuevo > 0) { nave->anguloReingreso = nuevo; }
+
+    printf("\nDatos actualizados de la nave:\n");
+    mostrarDatosNave(nave);
+
+    if (guardarDatosNave(nave, ARCHIVO_CONFIG)) {
+        printf("[SISTEMA] Cambios guardados en '%s'.\n", ARCHIVO_CONFIG);
+    } else {
+        printf("[ERROR] No se pudo guardar en '%s'. Los cambios valen solo en esta ejecucion.\n", ARCHIVO_CONFIG);
+    }
 }
 
 void valoresPredeterminadoDeNave(CapsulaOrion *nave){
@@ -163,82 +179,11 @@ void valoresPredeterminadoDeNave(CapsulaOrion *nave){
     printf("angulo de reingreso de la nave: %lf°\n", nave->anguloReingreso);
 }
 
-// Funciones de conversion mas utilitarias
-float a_en_g(double a){
-    // Funcion para expresar aceleracion en multiplos de gravedad
-    // La funcion recibe la aceleracion en m/s
-    float res = a / GRAVEDAD;
-    return res;
-}
-
-// Funcion universal de conversion de unidades donde 'unidad_original' y 'unidad_buscadad' deben ser equivalentes
-double conversor(double valor, double unidad_original, double unidad_buscada){
-    double res = valor * unidad_original / unidad_buscada;
-    return res;
-}
 //Lectura y Validacion de Datos de JSON cargado 
-void cargarDatosDeJSON(CapsulaOrion *nave) {
-    char ruta[256];
-    
-    printf("\n--- INICIO DE SIMULACION ---\n");
-    printf("Ingrese la ruta completa de su archivo JSON (ej: C:\\Users\\Usuario\\reporte.json)\n");
-    printf("O presione Enter para iniciar con los valores por defecto: ");
-    
-    // Leemos lo que escribe el usuario
-    fgets(ruta, sizeof(ruta), stdin);
-    
-    // Limpiamos el salto de linea del Enter que deja fgets
-    if (strlen(ruta) > 0 && ruta[strlen(ruta) - 1] == '\n') {
-        ruta[strlen(ruta) - 1] = '\0';
-    }
-    
-    // Si solo apretó Enter, salimos y usa los valores que ya tiene la nave
-    if (strlen(ruta) == 0) {
-        return;
-    }
-
-    // Intentamos abrir el archivo en la ruta especificada
-    FILE *archivo = fopen(ruta, "r");
+int guardarDatosNave(const CapsulaOrion *nave, const char *ruta) {
+    FILE *archivo = fopen(ruta, "w");
     if (archivo == NULL) {
-        printf("\n[ERROR] No se encontro el archivo en: %s\n", ruta);
-        printf("[SISTEMA] Iniciando con valores predeterminados.\n");
-        return; 
-    }
-
-    char linea[150];
-    // Leemos linea por linea y extraemos los numeros
-    while (fgets(linea, sizeof(linea), archivo)) {
-        char *dosPuntos = strstr(linea, ":");
-        if (dosPuntos != NULL) {
-            if (strstr(linea, "\"masa_kg\"")) {
-                sscanf(dosPuntos + 1, "%lf", &nave->masa);
-            } else if (strstr(linea, "\"altitud_m\"")) {
-                sscanf(dosPuntos + 1, "%lf", &nave->altitud);
-            } else if (strstr(linea, "\"velocidad_ms\"")) {
-                sscanf(dosPuntos + 1, "%lf", &nave->velocidad);
-            } else if (strstr(linea, "\"anguloReingreso_grados\"")) {
-                sscanf(dosPuntos + 1, "%lf", &nave->anguloReingreso);
-            }
-        }
-    }
-    fclose(archivo);
-
-    // Verificamos que los datos tengan sentido (no pueden ser neg o cero)
-    if (nave->masa <= 0 || nave->altitud <= 0 || nave->velocidad <= 0) {
-        printf("\n[ALERTA] El JSON estaba corrupto o tenia valores fisicamente imposibles.\n");
-        valoresPredeterminadoDeNave(nave);
-    } else {
-        printf("\n[SISTEMA] Configuracion cargada con exito desde el archivo.\n");
-    }
-}
-// Implementacion de persistencia de datos (en json)
-void generarInformeJSON(CapsulaOrion *nave) {
-    // Abrir o crear el archivo en modo escritura ("w" de write)
-    FILE *archivo = fopen("reporte_artemis.json", "w");
-    
-    if (archivo == NULL) {
-        printf("\n[ERROR] No se pudo crear el archivo JSON.\n");
-        return;
+        return 0;
     }
 
     fprintf(archivo, "{\n");
@@ -251,6 +196,88 @@ void generarInformeJSON(CapsulaOrion *nave) {
     fprintf(archivo, "}\n");
 
     fclose(archivo);
-    
-    printf("\n[SISTEMA] Informe JSON generado exitosamente en 'reporte_artemis.json'.\n");
+    return 1;
+}
+
+// Lee un JSON y carga los datos en la nave. Devuelve 1 si pudo, 0 si fallo.
+// Si falla, la nave queda exactamente como estaba.
+int cargarDatosNave(CapsulaOrion *nave, const char *ruta) {
+    FILE *archivo = fopen(ruta, "r");
+    if (archivo == NULL) {
+        return 0; 
+    }
+
+    CapsulaOrion temporal = *nave;   // copia de trabajo
+    int encontrados = 0;             // cuantos datos se leyeron bien
+    char linea[150];
+
+    while (fgets(linea, sizeof(linea), archivo)) {
+        char *dosPuntos = strstr(linea, ":");
+        if (dosPuntos != NULL) {
+            if (strstr(linea, "\"masa_kg\"")) {
+                if (sscanf(dosPuntos + 1, "%lf", &temporal.masa) == 1) { encontrados++; }
+            } else if (strstr(linea, "\"altitud_m\"")) {
+                if (sscanf(dosPuntos + 1, "%lf", &temporal.altitud) == 1) { encontrados++; }
+            } else if (strstr(linea, "\"velocidad_ms\"")) {
+                if (sscanf(dosPuntos + 1, "%lf", &temporal.velocidad) == 1) { encontrados++; }
+            } else if (strstr(linea, "\"anguloReingreso_grados\"")) {
+                if (sscanf(dosPuntos + 1, "%lf", &temporal.anguloReingreso) == 1) { encontrados++; }
+            }
+        }
+    }
+    fclose(archivo);
+
+    // Tienen que estar los 4 datos
+    if (encontrados != 4) {
+        return 0;
+    }
+    // Los valores tienen que ser fisicamente posibles
+    if (temporal.masa <= 0 || temporal.altitud <= 0 ||
+        temporal.velocidad <= 0 || temporal.anguloReingreso <= 0) {
+        return 0;
+    }
+
+    *nave = temporal;   // recien ahora se modifica la nave real
+    return 1;
+}
+
+void cargarPresetDesdeArchivo(CapsulaOrion *nave) {
+    char ruta[256];
+
+    printf("\n--- CARGAR PRESET DESDE ARCHIVO JSON ---\n");
+    printf("Ingrese la ruta del archivo (o presione Enter para cancelar): ");
+    fgets(ruta, sizeof(ruta), stdin);
+
+    // Sacamos el salto de linea que deja fgets
+    if (strlen(ruta) > 0 && ruta[strlen(ruta) - 1] == '\n') {
+        ruta[strlen(ruta) - 1] = '\0';
+    }
+
+    if (strlen(ruta) == 0) {
+        printf("[SISTEMA] Operacion cancelada.\n");
+        return;
+    }
+
+    if (cargarDatosNave(nave, ruta)) {
+        printf("[SISTEMA] Preset cargado con exito:\n");
+        mostrarDatosNave(nave);
+
+        // Guardamos tambien en el archivo de configuracion para que quede igual al iniciar
+        if (guardarDatosNave(nave, ARCHIVO_CONFIG)) {
+            printf("[SISTEMA] Datos guardados tambien en '%s'.\n", ARCHIVO_CONFIG);
+        } else {
+            printf("[ERROR] No se pudo guardar en '%s'.\n", ARCHIVO_CONFIG);
+        }
+    } else {
+        printf("[ERROR] No se pudo cargar '%s' (no existe, esta corrupto o los valores son imposibles).\n", ruta);
+        printf("[SISTEMA] Se mantienen los datos actuales de la nave.\n");
+    }
+}
+
+void generarInformeJSON(CapsulaOrion *nave) { // AUN NO HACE NADA RELEVANTE, DESARROLLAR
+    if (guardarDatosNave(nave, "reporte_artemis.json")) {
+        printf("\n[SISTEMA] Informe JSON generado en 'reporte_artemis.json'.\n");
+    } else {
+        printf("\n[ERROR] No se pudo crear el archivo JSON.\n");
+    }
 }

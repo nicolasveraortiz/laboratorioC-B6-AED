@@ -32,6 +32,7 @@ void mostrarMenu()
         "4. Evaluar reingreso a la atmósfera \n"        
         "5. Modificar datos de la nave \n"
         "6. Generar informe de la nave \n"
+        "7. Cargar preset desde archivo JSON \n"
         "0. Cerrar el programa \n");
         
 }
@@ -60,6 +61,9 @@ void procesoEjecutar(int opcion, CapsulaOrion *nave)
         break;
     case 6:
         generarInformeJSON(nave);
+        break;
+    case 7:
+        cargarPresetDesdeArchivo(nave);
         break;
     case 0:
         printf("Cerrando el programa...");
