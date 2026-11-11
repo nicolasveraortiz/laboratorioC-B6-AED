@@ -271,11 +271,3 @@ void iniciarDatosNave(CapsulaOrion *nave) {
         }
     }
 }
-
-void generarInformeJSON(CapsulaOrion *nave) { 
-    if (guardarDatosNave(nave, "reporte_artemis.json")) {
-        printf("\n[SISTEMA] Informe JSON generado en 'reporte_artemis.json'.\n");
-    } else {
-        printf("\n[ERROR] No se pudo crear el archivo JSON.\n");
-    }
-}

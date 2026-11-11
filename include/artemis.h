@@ -27,12 +27,12 @@ double calcularTrabajoFriccion(double energiaMecanicaFinal, double energiaMecani
 double calcularDesaceleracion(double vInicial, double vFinal, double tiempo);
 double calcularFuerzaImpacto(double masa, double velocidad, double distanciaHundimiento);
 
+void iniciarDatosNave(CapsulaOrion *nave);
 void modificarDatosNave(CapsulaOrion *nave);
 void mostrarDatosNave(const CapsulaOrion *nave);
 int guardarDatosNave(const CapsulaOrion *nave, const char *ruta);
 int cargarDatosNave(CapsulaOrion *nave, const char *ruta);
 
-// AGREGAR: void iniciarDatosNave(CapsulaOrion *nave);
 void cargarPresetDesdeArchivo(CapsulaOrion *nave);
 
 float a_en_g(double a);

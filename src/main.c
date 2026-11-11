@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "../include/artemis.h"
 #include "../include/validaciones.h"
 
@@ -10,7 +11,7 @@ int main() {
 
     while (bandera) {
         mostrarMenu();
-        opcion = leerEntero(0, 7);
+        opcion = leerEntero(0, 6);
         int c;
         while ((c = getchar()) != '\n' && c != EOF); 
         procesoEjecutar(opcion, &nave);
