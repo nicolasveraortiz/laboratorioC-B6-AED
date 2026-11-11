@@ -12,7 +12,7 @@ double calcularEnergiaPotencial(double masa, double altitud) {
 }
 
 double calcularTrabajoFriccion(double energiaMecanicaFinal, double energiaMecanicaInicial) {
-    return energiaMecanicaFinal - energiaMecanicaInicial; // Negativo porque disipa energía
+    return energiaMecanicaFinal - energiaMecanicaInicial; 
 }
 
 double calcularDesaceleracion(double vInicial, double vFinal, double tiempo) {
@@ -28,19 +28,14 @@ double calcularFuerzaImpacto(double masa, double velocidad, double distanciaHund
 }
 
 float a_en_g(double a){
-    // Funcion para expresar aceleracion en multiplos de gravedad
-    // La funcion recibe la aceleracion en m/s
     float res = a / GRAVEDAD;
     return res;
 }
 
-// Funcion universal de conversion de unidades donde 'unidad_original' y 'unidad_buscadad' deben ser equivalentes
 double conversor(double valor, double unidad_original, double unidad_buscada){
     double res = valor * unidad_original / unidad_buscada;
     return res;
 }
-
-// IMPLEMENTACIÓN DE FUNCIONES PARA EL MENU
 
 void resolverFrenadoAerodinamico(CapsulaOrion *nave) {
     const double velocidadFinal = 25.0;
@@ -55,7 +50,6 @@ void resolverFrenadoAerodinamico(CapsulaOrion *nave) {
     
     double trabajo = calcularTrabajoFriccion(ef, ei);
 
-    // Mostrar los resultados de forma ordenada y profesional
     printf(" > Masa de la nave:            %.2f kg\n", nave->masa);
     printf(" > Altitud inicial / final:    %.2f m / %.2f m\n", nave->altitud, altitudFinal);
     printf(" > Velocidad inicial / final:  %.2f m/s / %.2f m/s\n", nave->velocidad, velocidadFinal);
@@ -71,16 +65,15 @@ void resolverDesaceleracionTripulacion(CapsulaOrion *nave) {
     printf("Velocidad de ingreso: %.2fm/s\n", nave->velocidad);
     printf("velocidad de despliegue de paracaidas: %.2f m/s\n", velocidadFinal);
     double tiempoFrenado = leerRealPositivo(0.001, 3600.0, "Ingrese el tiempo esperado de la fase de mayor frenado en segundos (ej: 400.0): ");
-    //funcion matematica: 
+
     double aceleracion = calcularDesaceleracion(nave->velocidad, velocidadFinal, tiempoFrenado);
     double fuerzaG = a_en_g(aceleracion);
     printf("\n[REPORTE DE DESACELERACION]\n");
     printf("> Desaceleracion media: %.2f m/s^2\n", aceleracion);
-    // Uso -fuerzag porque la aceleracion es negativa por frenado, asi mostramos Gs positivos
+
     printf("> Fuerza G soportada por los astronautas: %.2f G\n", -fuerzaG);
     
-    if (-fuerzaG > 9.0) {
-        //Advertencia creada:
+        if (fuerzaG < -9.0) {
         printf("[ALERTA CRITICA] Riesgo de perdida de conocimiento inducida por fuerzas G (G-LOC).\n");
     }   else {
         printf("[ESTADO] Fuerzas G dentro de los parametros de supervivencia.\n");
@@ -88,15 +81,15 @@ void resolverDesaceleracionTripulacion(CapsulaOrion *nave) {
 }
 
 void resolverAmerizajeImpacto(CapsulaOrion *nave) {
-    //segun escenario la capsula toca el agua a 8.0m/s
+
     double velocidadImpacto = 8.0;
     printf("\n-- FASE 3: AMERIZAJE EN EL OCEANO PACIFICO ---\n");
     printf("Masa de la capsula: %.2f kg\n", nave->masa);
     printf("Velocidad de impacto contra el agua: %.2f m/s\n", velocidadImpacto);
     double distanciaHundimiento = leerRealPositivo(0.001, 50.0, "Ingrese la profundidad de hundimiento en el agua en metros (ej. 1.50): ");
-    //funcion matematica:
+
     double fuerzaTotal = calcularFuerzaImpacto(nave->masa, velocidadImpacto, distanciaHundimiento);
-    //comparo la fuerza del impacto contra el peso normal de la nave 
+
     double pesoNave = nave->masa * GRAVEDAD;
     double multiplicadorPeso = fuerzaTotal / pesoNave;
 
@@ -112,9 +105,6 @@ void evaluarVentanaReingreso (CapsulaOrion *nave) {
     printf("          EVALUACION DE ANGULO DE REINGRESO           \n");
     printf("=============================================\n");
 
-    // printf("Ingrese un angulo de reingreso: ");
-    // angulo = solicitar_float_positivo();
-
     printf(" > Angulo de reingreso (gamma) actual: %.2f°\n" , nave->anguloReingreso);
 
     if (nave->anguloReingreso < 5.5) {
@@ -125,8 +115,6 @@ void evaluarVentanaReingreso (CapsulaOrion *nave) {
         printf(" [TRAYECTORIA SEGURA] Ángulo de reingreso dentro del rango esperado (5,5° - 7.0°).\n");
     }
 }
-
-// funciones relacionadas con la generacion, carga o manipulacion de un archivo
 
 void mostrarDatosNave(const CapsulaOrion *nave) {
     printf("Masa de la nave: %.2f kg\n", nave->masa);
@@ -179,7 +167,6 @@ void valoresPredeterminadoDeNave(CapsulaOrion *nave){
     printf("angulo de reingreso de la nave: %lf°\n", nave->anguloReingreso);
 }
 
-//Lectura y Validacion de Datos de JSON cargado 
 int guardarDatosNave(const CapsulaOrion *nave, const char *ruta) {
     FILE *archivo = fopen(ruta, "w");
     if (archivo == NULL) {
@@ -199,45 +186,41 @@ int guardarDatosNave(const CapsulaOrion *nave, const char *ruta) {
     return 1;
 }
 
-// Lee un JSON y carga los datos en la nave. Devuelve 1 si pudo, 0 si fallo.
-// Si falla, la nave queda exactamente como estaba.
 int cargarDatosNave(CapsulaOrion *nave, const char *ruta) {
     FILE *archivo = fopen(ruta, "r");
     if (archivo == NULL) {
         return 0; 
     }
 
-    CapsulaOrion temporal = *nave;   // copia de trabajo
-    int encontrados = 0;             // cuantos datos se leyeron bien
+    CapsulaOrion temporal = *nave;
+    int encontrados = 0; 
     char linea[150];
 
     while (fgets(linea, sizeof(linea), archivo)) {
         char *dosPuntos = strstr(linea, ":");
         if (dosPuntos != NULL) {
             if (strstr(linea, "\"masa_kg\"")) {
-                if (sscanf(dosPuntos + 1, "%lf", &temporal.masa) == 1) { encontrados++; }
+                if (sscanf(dosPuntos + 1, " %lf,", &temporal.masa) == 1 || sscanf(dosPuntos + 1, " %lf", &temporal.masa) == 1) { encontrados++; }
             } else if (strstr(linea, "\"altitud_m\"")) {
-                if (sscanf(dosPuntos + 1, "%lf", &temporal.altitud) == 1) { encontrados++; }
+                if (sscanf(dosPuntos + 1, " %lf,", &temporal.altitud) == 1 || sscanf(dosPuntos + 1, " %lf", &temporal.altitud) == 1) { encontrados++; }
             } else if (strstr(linea, "\"velocidad_ms\"")) {
-                if (sscanf(dosPuntos + 1, "%lf", &temporal.velocidad) == 1) { encontrados++; }
+                if (sscanf(dosPuntos + 1, " %lf,", &temporal.velocidad) == 1 || sscanf(dosPuntos + 1, " %lf", &temporal.velocidad) == 1) { encontrados++; }
             } else if (strstr(linea, "\"anguloReingreso_grados\"")) {
-                if (sscanf(dosPuntos + 1, "%lf", &temporal.anguloReingreso) == 1) { encontrados++; }
+                if (sscanf(dosPuntos + 1, " %lf,", &temporal.anguloReingreso) == 1 || sscanf(dosPuntos + 1, " %lf", &temporal.anguloReingreso) == 1) { encontrados++; }
             }
         }
     }
     fclose(archivo);
 
-    // Tienen que estar los 4 datos
     if (encontrados != 4) {
         return 0;
     }
-    // Los valores tienen que ser fisicamente posibles
     if (temporal.masa <= 0 || temporal.altitud <= 0 ||
         temporal.velocidad <= 0 || temporal.anguloReingreso <= 0) {
         return 0;
     }
 
-    *nave = temporal;   // recien ahora se modifica la nave real
+    *nave = temporal;   
     return 1;
 }
 
@@ -248,7 +231,6 @@ void cargarPresetDesdeArchivo(CapsulaOrion *nave) {
     printf("Ingrese la ruta del archivo (o presione Enter para cancelar): ");
     fgets(ruta, sizeof(ruta), stdin);
 
-    // Sacamos el salto de linea que deja fgets
     if (strlen(ruta) > 0 && ruta[strlen(ruta) - 1] == '\n') {
         ruta[strlen(ruta) - 1] = '\0';
     }
@@ -262,7 +244,6 @@ void cargarPresetDesdeArchivo(CapsulaOrion *nave) {
         printf("[SISTEMA] Preset cargado con exito:\n");
         mostrarDatosNave(nave);
 
-        // Guardamos tambien en el archivo de configuracion para que quede igual al iniciar
         if (guardarDatosNave(nave, ARCHIVO_CONFIG)) {
             printf("[SISTEMA] Datos guardados tambien en '%s'.\n", ARCHIVO_CONFIG);
         } else {
@@ -271,5 +252,30 @@ void cargarPresetDesdeArchivo(CapsulaOrion *nave) {
     } else {
         printf("[ERROR] No se pudo cargar '%s' (no existe, esta corrupto o los valores son imposibles).\n", ruta);
         printf("[SISTEMA] Se mantienen los datos actuales de la nave.\n");
+    }
+}
+
+void iniciarDatosNave(CapsulaOrion *nave) {
+    printf("[SISTEMA] Buscando archivo de datos '%s'...\n", ARCHIVO_CONFIG);
+
+    if (cargarDatosNave(nave, ARCHIVO_CONFIG)) {
+        printf("[SISTEMA] Datos de la nave cargados correctamente.\n");
+    } else {
+        printf("[ALERTA] No se pudo cargar '%s' (no existe, esta corrupto o no se puede leer).\n", ARCHIVO_CONFIG);
+        printf("[SISTEMA] Se usaran los valores predeterminados y se creara el archivo de nuevo.\n");
+
+        if (guardarDatosNave(nave, ARCHIVO_CONFIG)) {
+            printf("[SISTEMA] Archivo '%s' creado con los valores predeterminados.\n", ARCHIVO_CONFIG);
+        } else {
+            printf("[ERROR] No se pudo crear el archivo. El programa sigue con los valores predeterminados, sin guardarlos.\n");
+        }
+    }
+}
+
+void generarInformeJSON(CapsulaOrion *nave) { 
+    if (guardarDatosNave(nave, "reporte_artemis.json")) {
+        printf("\n[SISTEMA] Informe JSON generado en 'reporte_artemis.json'.\n");
+    } else {
+        printf("\n[ERROR] No se pudo crear el archivo JSON.\n");
     }
 }
