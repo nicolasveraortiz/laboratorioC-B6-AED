@@ -1,0 +1,8 @@
+{
+  "CapsulaOrion": {
+    "masa_kg": 10400.00,
+    "altitud_m": 120000.00,
+    "velocidad_ms": 11000.00,
+    "anguloReingreso_grados": 6.20
+  }
+}

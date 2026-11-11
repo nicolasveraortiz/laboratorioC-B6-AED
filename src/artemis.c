@@ -161,10 +161,10 @@ void valoresPredeterminadoDeNave(CapsulaOrion *nave){
     nave->anguloReingreso = 6.2;
 
     printf("Restableciendo valores de la nave...\n");
-    printf("Masa de la nave: %lfkg\n", nave->masa);
-    printf("Altitud de reingreso de nave: %lfm\n", nave->altitud);
-    printf("Velocdad inicial de la nave: %lfm/s\n", nave->velocidad);
-    printf("Angulo de reingreso de la nave: %lf°\n", nave->anguloReingreso);
+    printf("Masa de la nave: %.2lfkg\n", nave->masa);
+    printf("Altitud de reingreso de nave: %.2lfm\n", nave->altitud);
+    printf("Velocdad inicial de la nave: %.2lfm/s\n", nave->velocidad);
+    printf("Angulo de reingreso de la nave: %.2lf°\n", nave->anguloReingreso);
 }
 
 int guardarDatosNave(const CapsulaOrion *nave, const char *ruta) {
