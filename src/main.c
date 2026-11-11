@@ -8,11 +8,13 @@ int main() {
     int opcion = 0;
     CapsulaOrion nave = {10400.0, 120000.0, 11000.0, 6.2};
     arteIntro();
-    // DESARROLLAR: iniciarDatosNave(&nave);  
+    iniciarDatosNave(&nave);
 
     while (bandera) {
         mostrarMenu();
-        opcion = leerEntero(0, 6);
+        opcion = leerEntero(0, 7);
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF); 
         procesoEjecutar(opcion, &nave);
         if (opcion == 0) {bandera = false;}
     }
