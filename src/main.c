@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdbool.h>
 #include "../include/artemis.h"
 #include "../include/validaciones.h"
 
