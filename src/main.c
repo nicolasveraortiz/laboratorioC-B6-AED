@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "../include/artemis.h"
 #include "../include/validaciones.h"
+#include <stdbool.h>
 
 int main() {
     bool bandera = true;
@@ -11,7 +12,7 @@ int main() {
 
     while (bandera) {
         mostrarMenu();
-        opcion = leerEntero(0, 6);
+        opcion = leerEntero(0, 7);
         int c;
         while ((c = getchar()) != '\n' && c != EOF); 
         procesoEjecutar(opcion, &nave);
