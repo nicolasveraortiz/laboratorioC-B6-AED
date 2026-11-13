@@ -7,8 +7,6 @@
 
 ## a) Integrantes y comisión
 
-### Integrante 
-
 | Integrantes |
 | --- |
 | Santiago Solari |
