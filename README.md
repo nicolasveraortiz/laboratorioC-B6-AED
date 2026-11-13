@@ -8,11 +8,14 @@
 ## a) Integrantes y comisión
 
 ### Integrante 
-* Santiago Solari| validaciones.c |
-* Santiago Emmanuel Enriquez | validaciones.c |
-* Santiago Mac Donald| artemis.c |
-* Luciano Gabriel Pereyra Brest| artemis.c / validaciones.c |
-* Clivio Nicolás Vera Ortiz | main.c / validaciones.c |
+
+| Integrantes |
+| --- |
+| Santiago Solari |
+| Santiago Emmanuel Enriquez |
+| Santiago Mac Donald |
+| Luciano Gabriel Pereyra Brest |
+| Clivio Nicolás Vera Ortiz |
 
 **Comisión:** K1.2
 **Video de presentación:** https://drive.google.com/file/d/1suVy8tuOP27-lO_H0Oq32eTJWqctcWX7/view?usp=sharing
@@ -31,7 +34,7 @@ Tras el sobrevuelo lunar, el módulo de tripulación Orion se separa del módulo
 |---|---|
 | Masa de la cápsula | 10.400,0 kg |
 | Altitud de reingreso | 120.000,0 m (120 km) |
-| Velocidad de reingreso | 11.000,0 m/s (≈ 39.600 km/h, Mach 32) |
+| Velocidad de reingreso | 11.000,0 m/s (≈ 39.600 km/h) |
 | Ángulo de reingreso (γ) | 6,2° |
 | Velocidad de despliegue de paracaídas | 25,0 m/s |
 | Altitud de despliegue de paracaídas | 2.500,0 m (2,5 km) |
@@ -158,5 +161,5 @@ Conforme a lo exigido por la cátedra, se registra el uso de herramientas de IA 
 |---|---|---|---|
 | Claude (Anthropic) | Depuración de entrada de datos | Se consultó por qué, al ingresar una letra en el menú, el programa entraba en un bucle infinito mostrando "Opción inválida". | Se comprendió que `scanf("%d")` no consume el carácter inválido y deja basura en el buffer. Se probó con `a`, `abc` y `3abc`, y se adaptó la solución para aplicarla a todos los puntos de ingreso de datos. |
 | Claude (Anthropic) | Revisión de `solicitar_double_positivo` | Se consultaron los errores de la función de ingreso seguro (tamaño del buffer en `fgets`, memoria dinámica sin liberar, precedencia de operadores en la condición). | Se corrigió el uso de `sizeof`, se evaluó reemplazar el `malloc` por un arreglo local y se agregaron paréntesis a la condición. | 
-<!-- La función solicitar_double_positivo finalmente se optó por cambiarla -->
 | Claude (Anthropic) | Generacion de script `.sh` y `.bat` | En orden de que el usuario no necesite ejecutar el comando de compilacion del proyecto manualmente, se solicitó la generacion de un script para la creacion del ejecutable del proyecto | Se implementó el script tanto para sistemas basado en Unix (MacOS/Linux -> .sh) como para sistemas Windows (.bat). Al contar con un script ejecutable para estos sistemas operativos, nos aseguramos de que cualquiera puede compilar el programa de forma sencilla.|
+| Gemini (Google) | Ayuda para comprender y manipular archivos JSON| Se solicitaron ejemplos de códigos sencillos para manipular JSON y una lista de errores cómunes | Se generaron multiples funciones para manipular el JSON de datos.|
