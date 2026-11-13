@@ -48,14 +48,17 @@ Tras el sobrevuelo lunar, el módulo de tripulación Orion se separa del módulo
    - γ < 5,5°: la nave rebota hacia el espacio (rebote atmosférico).
    - γ > 7,0°: desaceleración excesiva, la nave se desintegra.
    - Dentro del rango: trayectoria segura.
-5. **Modificar datos nave.** El programa ofrece al usuario cambiar los valores actuales del registro de la nave, esto permite explorar otras posibilidades. La configuración se cambia en .cfg y tiene su respectivo sistema de manejo de errores típicos.
+5. **Modificar datos nave.** El programa ofrece al usuario cambiar los valores actuales del registro de la nave, esto permite explorar otras posibilidades. La configuración se cambia en sobre el registro de los datos actuales, tiene su respectivo sistema de manejo de errores típicos y guarda la configuracion nueva en un archivo .json.
+6. **Cargar preset de archivo JSON.** Permite al usuario modificar los datos de la nave indicando la ruta a un archivo .json que contenga esa configuracion de nave con el formato correcto, verifica el formato de los datos y coherencia de los mismos. 
+7. **Restablecer valores predeterminados**. Si el usuario luego de modificar los valores de la nave quisiera volver a los datos originales sin escribirlos manualmente, esta funcion lo hace de forma automatica.
 
 ### Reglas de uso
 
-- El programa corre por consola y se maneja con un menú numérico.
+- El programa corre por consola y se maneja con un menú numérico del 0 al 7.
 - Cada opción ejecuta una fase de forma independiente sobre los datos de la cápsula.
 - Las fases 2 y 3 piden un dato al usuario, que debe ser un número real positivo.
-- La opción 5 cierra el programa.
+- La opción 5 solicita al usuario valores nuevos para la nave dentro de un rango especificado en la misma funcion.
+- La opcion 6 solicita al usuario un ruta valida, de no serlo o de contener el .json valores no validos no se utiliza.
 
 ---
 
@@ -68,11 +71,13 @@ Tras el sobrevuelo lunar, el módulo de tripulación Orion se separa del módulo
 2. Resolver desaceleracion de la tripulacion
 3. Resolver impacto del amerizaje
 4. Evaluar reingreso a la atmósfera
-5. Modificar datos nave
+5. Modificar datos de la nave
+6. Cargar preset desde archivo JSON
+7. Restablecer valores predeterminados
 0. Cerrar el programa
 ```
 
-Al iniciar, el programa muestra un banner de bienvenida y el menú. Tras ejecutar una opción vuelve al menú, hasta que el usuario elige la opción 5. Existe además un **modo de depuración** (código oculto `6010`) pensado para el equipo de desarrollo, que permite probar funciones auxiliares, como la de ingreso seguro de números, de forma aislada.
+Al iniciar, el programa muestra un banner de bienvenida y el menú. Tras ejecutar una opción vuelve al menú, hasta que el usuario elige la opción 0.
 
 ### Ejemplo de ejecución (valores iniciales de la misión)
 
@@ -100,7 +105,7 @@ proyecto/
 | Módulo | Responsabilidad |
 |---|---|
 | `main.c` | Contiene únicamente `main()`. Inicializa la cápsula, muestra la intro y ejecuta el ciclo del menú hasta que se elige salir. |
-| `artemis.h` | Define el tipo estructurado `CapsulaOrion` (masa, altitud, velocidad, ángulo de reingreso), las constantes de la misión (`#define`) y los prototipos públicos. |
+| `artemis.h` | Define el tipo estructurado `CapsulaOrion` (masa, altitud, velocidad, ángulo de reingreso) y las constantes de la misión (`#define`). |
 | `artemis.c` | Implementa las funciones físicas puras (`calcularEnergiaCinetica`, `calcularEnergiaPotencial`, `calcularTrabajoFriccion`, `calcularDesaceleracion`, `calcularFuerzaImpacto`), las funciones de cada fase del menú (`resolverFrenadoAerodinamico`, `resolverDesaceleracionTripulacion`, `resolverAmerizajeImpacto`, `evaluarVentanaReingreso`) y utilidades de conversión (`a_en_g`, `conversor`). |
 | `validaciones.c/.h` | Interfaz de consola (`arteIntro`, `mostrarMenu`), despacho de opciones (`procesoEjecutar`), modo depuración y la función de ingreso seguro `solicitar_double_positivo`. |
 
@@ -123,17 +128,21 @@ proyecto/
 
 ### Compilación
 
-Desde la raíz del repositorio:
+En una terminal, desde la raiz del proyecto, ejecutar de los siguiente el script correspondiente al sistema operativo utilizado:
+- macOS / Linux:  sh ./build.sh
+- Windows:        build.bat
+
+En caso de generar un error de compilacion, ejecutar el siguiente comando para compilar el proyecto manualmente. Desde la raíz del repositorio, basta con copiar y pegar el siguiente comando:
 
 ```bash
-gcc -Wall -Wextra -o artemis src/main.c src/artemis.c src/validaciones.c
+gcc ./src/main.c ./src/artemis.c ./src/validaciones.c -o artemis
 ```
 
 ### Ejecución
 
+Una vez ejecutado el script anterior se generará un archivo ejecutable desde la terminal, con el se da inicio al programa.
 ```bash
-./artemis        # Linux / macOS
-artemis.exe      # Windows
+./artemis        # generado localmente no depende de que S.O. se utilice.
 ```
 
 ---
@@ -145,4 +154,6 @@ Conforme a lo exigido por la cátedra, se registra el uso de herramientas de IA 
 | Herramienta | Tarea | Consulta realizada | Cómo se validó / adaptó |
 |---|---|---|---|
 | Claude (Anthropic) | Depuración de entrada de datos | Se consultó por qué, al ingresar una letra en el menú, el programa entraba en un bucle infinito mostrando "Opción inválida". | Se comprendió que `scanf("%d")` no consume el carácter inválido y deja basura en el buffer. Se probó con `a`, `abc` y `3abc`, y se adaptó la solución para aplicarla a todos los puntos de ingreso de datos. |
-| Claude (Anthropic) | Revisión de `solicitar_double_positivo` | Se consultaron los errores de la función de ingreso seguro (tamaño del buffer en `fgets`, memoria dinámica sin liberar, precedencia de operadores en la condición). | Se corrigió el uso de `sizeof`, se evaluó reemplazar el `malloc` por un arreglo local y se agregaron paréntesis a la condición. |
+| Claude (Anthropic) | Revisión de `solicitar_double_positivo` | Se consultaron los errores de la función de ingreso seguro (tamaño del buffer en `fgets`, memoria dinámica sin liberar, precedencia de operadores en la condición). | Se corrigió el uso de `sizeof`, se evaluó reemplazar el `malloc` por un arreglo local y se agregaron paréntesis a la condición. | 
+<!-- La función solicitar_double_positivo finalmente se optó por cambiarla -->
+| Claude (Anthropic) | Generacion de script `.sh` y `.bat` | En orden de que el usuario no necesite ejecutar el comando de compilacion del proyecto manualmente, se solicitó la generacion de un script para la creacion del ejecutable del proyecto | Se implementó el script tanto para sistemas basado en Unix (MacOS/Linux -> .sh) como para sistemas Windows (.bat). Al contar con un script ejecutable para estos sistemas operativos, nos aseguramos de que cualquiera puede compilar el programa de forma sencilla.

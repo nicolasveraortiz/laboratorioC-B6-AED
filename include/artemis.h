@@ -36,4 +36,3 @@ void valoresPredeterminadoDeNave(CapsulaOrion *nave);
 void cargarPresetDesdeArchivo(CapsulaOrion *nave);
 
 float a_en_g(double a);
-double conversor(double valor, double unidad_original, double unidad_buscada);

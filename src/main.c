@@ -14,7 +14,7 @@ int main() {
         mostrarMenu();
         opcion = leerEntero(0, 7);
         int c;
-        while ((c = getchar()) != '\n' && c != EOF); 
+        while ((c = getchar()) != '\n' && c != EOF){}; // Bucle utilizado por la funcion 6 del menu para la lectura de archivos caracter a caracter. 
         procesoEjecutar(opcion, &nave);
         if (opcion == 0) {bandera = false;}
     }

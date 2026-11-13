@@ -32,11 +32,6 @@ float a_en_g(double a){
     return res;
 }
 
-double conversor(double valor, double unidad_original, double unidad_buscada){
-    double res = valor * unidad_original / unidad_buscada;
-    return res;
-}
-
 void resolverFrenadoAerodinamico(CapsulaOrion *nave) {
     const double velocidadFinal = 25.0;
     const double altitudFinal = 2500.0;
