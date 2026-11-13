@@ -7,16 +7,15 @@
 
 ## a) Integrantes y comisión
 
-| Integrante | Rol / módulos principales |
-|---|---|
-| Santiago Solari| validaciones.c |
-| Santiago Emmanuel Enriquez | validaciones.c |
-| Santiago Mac Donald| artemis.c |
-| Luciano Gabriel Pereyra Brest| artemis.c / validaciones.c |
-| Clivio Nicolás Vera Ortiz | main.c / validaciones.c |
+### Integrante 
+* Santiago Solari| validaciones.c |
+* Santiago Emmanuel Enriquez | validaciones.c |
+* Santiago Mac Donald| artemis.c |
+* Luciano Gabriel Pereyra Brest| artemis.c / validaciones.c |
+* Clivio Nicolás Vera Ortiz | main.c / validaciones.c |
 
 **Comisión:** K1.2
-**Video de presentación:** -
+**Video de presentación:** https://drive.google.com/file/d/1suVy8tuOP27-lO_H0Oq32eTJWqctcWX7/view?usp=sharing
 
 ---
 
@@ -106,8 +105,8 @@ proyecto/
 |---|---|
 | `main.c` | Contiene únicamente `main()`. Inicializa la cápsula, muestra la intro y ejecuta el ciclo del menú hasta que se elige salir. |
 | `artemis.h` | Define el tipo estructurado `CapsulaOrion` (masa, altitud, velocidad, ángulo de reingreso) y las constantes de la misión (`#define`). |
-| `artemis.c` | Implementa las funciones físicas puras (`calcularEnergiaCinetica`, `calcularEnergiaPotencial`, `calcularTrabajoFriccion`, `calcularDesaceleracion`, `calcularFuerzaImpacto`), las funciones de cada fase del menú (`resolverFrenadoAerodinamico`, `resolverDesaceleracionTripulacion`, `resolverAmerizajeImpacto`, `evaluarVentanaReingreso`) y utilidades de conversión (`a_en_g`, `conversor`). |
-| `validaciones.c/.h` | Interfaz de consola (`arteIntro`, `mostrarMenu`), despacho de opciones (`procesoEjecutar`), modo depuración y la función de ingreso seguro `solicitar_double_positivo`. |
+| `artemis.c` | Implementa las funciones físicas puras (`calcularEnergiaCinetica`, `calcularEnergiaPotencial`, `calcularTrabajoFriccion`, `calcularDesaceleracion`, `calcularFuerzaImpacto`), las funciones de cada fase del menú (`resolverFrenadoAerodinamico`, `resolverDesaceleracionTripulacion`, `resolverAmerizajeImpacto`, `evaluarVentanaReingreso`) y utilidades de conversión (`a_en_g`). |
+| `validaciones.c/.h` | Interfaz de consola (`arteIntro`, `mostrarMenu`), despacho de opciones (`procesoEjecutar`), entrada de enteros positivos (`leerEntero`) y entrada de reales positivos (`leerRealPositivo`). |
 
 ### Decisiones de diseño
 
@@ -115,7 +114,6 @@ proyecto/
 - **Separación entre cálculo y presentación.** Las funciones `calcular...` reciben valores y devuelven un resultado, sin imprimir nada. Las funciones `resolver...` leen datos, llaman a las de cálculo y muestran el reporte. Esto evita código duplicado y facilita probar cada fórmula por separado.
 - **Constantes con nombre.** Los datos de la misión y la gravedad están definidos con `#define` en `artemis.h`, para no repetir números en el código.
 - **Cálculo energético del frenado.** El trabajo de rozamiento se obtiene por el principio de conservación de la energía mecánica (`Em = K + U`), tomando como estado inicial el reingreso y como estado final la apertura de paracaídas.
-- **Ingreso seguro con `fgets` y `strtod`.** La función `solicitar_double_positivo` lee una línea completa y la convierte con `strtod`, verificando que se haya leído un número, que no haya caracteres sobrantes, que el valor no se salga del rango de `double` y que sea positivo. De este modo una entrada inválida no deja basura en el buffer de entrada.
 
 ---
 
@@ -129,13 +127,18 @@ proyecto/
 ### Compilación
 
 En una terminal, desde la raiz del proyecto, ejecutar de los siguiente el script correspondiente al sistema operativo utilizado:
-- macOS / Linux:  sh ./build.sh
-- Windows:        build.bat
+- macOS / Linux:  sh ./Unix_build.sh
+- Windows:        ./Windows_build.bat
 
 En caso de generar un error de compilacion, ejecutar el siguiente comando para compilar el proyecto manualmente. Desde la raíz del repositorio, basta con copiar y pegar el siguiente comando:
 
 ```bash
 gcc ./src/main.c ./src/artemis.c ./src/validaciones.c -o artemis
+```
+
+> Si, en Windows, en lugar de utilizar el script se ejecutó el ultimo comando, se recomienda ejecutar el siguiente comando posteriormente al anterior para el correcto muestreo del diseño o banners en la consola:
+```bash
+chcp 65001
 ```
 
 ### Ejecución
@@ -156,4 +159,4 @@ Conforme a lo exigido por la cátedra, se registra el uso de herramientas de IA 
 | Claude (Anthropic) | Depuración de entrada de datos | Se consultó por qué, al ingresar una letra en el menú, el programa entraba en un bucle infinito mostrando "Opción inválida". | Se comprendió que `scanf("%d")` no consume el carácter inválido y deja basura en el buffer. Se probó con `a`, `abc` y `3abc`, y se adaptó la solución para aplicarla a todos los puntos de ingreso de datos. |
 | Claude (Anthropic) | Revisión de `solicitar_double_positivo` | Se consultaron los errores de la función de ingreso seguro (tamaño del buffer en `fgets`, memoria dinámica sin liberar, precedencia de operadores en la condición). | Se corrigió el uso de `sizeof`, se evaluó reemplazar el `malloc` por un arreglo local y se agregaron paréntesis a la condición. | 
 <!-- La función solicitar_double_positivo finalmente se optó por cambiarla -->
-| Claude (Anthropic) | Generacion de script `.sh` y `.bat` | En orden de que el usuario no necesite ejecutar el comando de compilacion del proyecto manualmente, se solicitó la generacion de un script para la creacion del ejecutable del proyecto | Se implementó el script tanto para sistemas basado en Unix (MacOS/Linux -> .sh) como para sistemas Windows (.bat). Al contar con un script ejecutable para estos sistemas operativos, nos aseguramos de que cualquiera puede compilar el programa de forma sencilla.
+| Claude (Anthropic) | Generacion de script `.sh` y `.bat` | En orden de que el usuario no necesite ejecutar el comando de compilacion del proyecto manualmente, se solicitó la generacion de un script para la creacion del ejecutable del proyecto | Se implementó el script tanto para sistemas basado en Unix (MacOS/Linux -> .sh) como para sistemas Windows (.bat). Al contar con un script ejecutable para estos sistemas operativos, nos aseguramos de que cualquiera puede compilar el programa de forma sencilla.|
